@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserMapper">
+    <select id="selectUser" resultType="cn.sxt.entity.User">
+    SELECT * FROM user WHERE id = #{id}
+    </select>
+
+    <!--parameterType为传入的参数类型，useGeneratedKeys是使用自增列，value后跟的name和pwd是User中的字段名-->
+    <insert id="addUser" parameterType="cn.sxt.entity.User" useGeneratedKeys="true">
+        INSERT INTO user(`name`, pwd) value (#{name}, #{pwd})
+    </insert>
+
+    <update id="updateUser" parameterType="cn.sxt.entity.User">
+        UPDATE user SET name=#{name}, pwd=#{pwd} WHERE id=#{id}
+    </update>
+    
+    <delete id="deleteUser">
+        DELETE FROM user WHERE id=#{id}
+    </delete>
+    <select id="selectAll" resultType="cn.sxt.entity.User">
+        SELECT * FROM user;
+    </select>
+</mapper>
