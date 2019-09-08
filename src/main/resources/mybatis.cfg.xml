@@ -3,18 +3,34 @@
                 PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
                 "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-<environments default="development">
-    <environment id="development">
-        <transactionManager type="JDBC"/>
-        <dataSource type="POOLED">
-            <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
-            <property name="url" value="jdbc:mysql://localhost:3306/test"/>
-            <property name="username" value="root"/>
-            <property name="password" value="123456"/>
-        </dataSource>
-    </environment>
-</environments>
-<mappers>
-    <mapper resource="user.mapper.xml"/>
-</mappers>
+    <properties resource="db.properties"/>
+    <typeAliases>
+        <!--为指定类型指定别名，使得在mapper映射文件中可以简化引用-->
+<!--        <typeAlias type="cn.sxt.entity.User" alias="User"/>-->
+        <!--为某个包下的所有类指定别名，默认别名是对应的类名-->
+        <package name="cn.sxt.entity"/>
+    </typeAliases>
+    <environments default="development">
+        <!--environments 指mybatis可以配置多个环境 default指向默认的环境
+        每个SqlSessionFactory对应一个environment-->
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <!--JDBC 这个配置使用JDBC 的提交和回滚功能，依赖于从数据源获得连接来管理事务的生命周期。
+                MANAGED 这个配置基本上什么都不做，从不提交或者回滚一个连接的事务，而是让容器(Spring, J2EE应用服务器)来管理事务的生命周期-->
+            <dataSource type="POOLED">
+                <!-- 数据源类型：
+                       UNPOOLED：只是在每次需要的时候简单地打开和关闭连接，也就是每次DB操作就打开一个新的，再关闭；
+                       POOLED：实现缓存了JDBC连接对象，避免每次创建新的数据库连接时都要初始化和认证，加快程序响应，适用于高并发环境；
+                       JNDI：与像Spring或应用服务器能够在外部或者内部配置数据源的容器一起使用，然后在JNDI上下文中引用它；-->
+                <property name="driver" value="${driver}"/>
+                <property name="url" value="${url}"/>
+                <property name="username" value="${username}"/>
+                <property name="password" value="${password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <!--定义映射SQL语句的文件（用'/'作路径的隔离）-->
+        <mapper resource="user.mapper.xml"/>
+    </mappers>
 </configuration>

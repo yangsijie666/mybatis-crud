@@ -3,23 +3,29 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="UserMapper">
-    <select id="selectUser" resultType="cn.sxt.entity.User">
+    <!--namespace命名空间，防止sql语句的id重名（比如可能会有多个SQL语句的id是selectAll）
+    命名规则：包名+类名/包名+mapper文件名-->
+    <select id="selectUser" resultType="User">
+    <!--id在该文件中唯一
+    parameterType 指SQL语句参数类型
+    resultType 返回结果类型
+    useGeneratedKeys="true" 使用自增主键-->
     SELECT * FROM user WHERE id = #{id}
     </select>
 
     <!--parameterType为传入的参数类型，useGeneratedKeys是使用自增列，value后跟的name和pwd是User中的字段名-->
-    <insert id="addUser" parameterType="cn.sxt.entity.User" useGeneratedKeys="true">
+    <insert id="addUser" parameterType="User" useGeneratedKeys="true">
         INSERT INTO user(`name`, pwd) value (#{name}, #{pwd})
     </insert>
 
-    <update id="updateUser" parameterType="cn.sxt.entity.User">
+    <update id="updateUser" parameterType="User">
         UPDATE user SET name=#{name}, pwd=#{pwd} WHERE id=#{id}
     </update>
     
     <delete id="deleteUser">
         DELETE FROM user WHERE id=#{id}
     </delete>
-    <select id="selectAll" resultType="cn.sxt.entity.User">
+    <select id="selectAll" resultType="User">
         SELECT * FROM user;
     </select>
 </mapper>
